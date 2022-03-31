@@ -7,24 +7,18 @@
 
 import UIKit
 
-class TagViewCell: UICollectionViewCell {
+class TagContainer: UIView {
     
-    static let cellId: String = UUID().uuidString
-    
-    var labelTrailingConstraintWithView,
+    private var labelTrailingConstraintWithView,
         labelTrailingConstraintWithButton: NSLayoutConstraint!
   
-    var heightOfButton, widthOfButton: NSLayoutConstraint!
+    private var heightOfButton, widthOfButton: NSLayoutConstraint!
     
-    var item: TagViewItem? {
-        didSet {
-            configureCell()
-        }
-    }
+    private var item: TagViewItem?
     
-    var rightSideButtonClickObserver: ((_ item: TagViewItem?) -> ())?
+    var rightSideButtonClickObserver, itemClickObserver: ((_ item: TagViewItem?) -> ())?
     
-    lazy var buttonClose: UIButton = {
+    private lazy var buttonClose: UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(self.buttonCloseClicked),
                          for: .touchUpInside)
@@ -33,7 +27,7 @@ class TagViewCell: UICollectionViewCell {
         return button
     }()
     
-    let labelTitle: UILabel = {
+    private let labelTitle: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 2
@@ -41,30 +35,18 @@ class TagViewCell: UICollectionViewCell {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    init(item: TagViewItem) {
+        super.init(frame: .zero)
+        self.item = item
         setupViews()
+        configureCell()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        labelTitle.text = nil
-        labelTitle.font = nil
-        labelTitle.textColor = nil
-        buttonClose.setImage(nil, for: [])
-        backgroundColor = nil
-        self.buttonClose.isHidden = true
-        heightOfButton?.constant = 0
-        widthOfButton?.constant = 0
-    }
-    
-    func setupViews() {
+    private func setupViews() {
         self.addSubviews(views: [labelTitle, buttonClose])
    
         buttonClose.setCenterY()
@@ -81,9 +63,12 @@ class TagViewCell: UICollectionViewCell {
         
         labelTrailingConstraintWithView = labelTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         labelTrailingConstraintWithButton = labelTitle.trailingAnchor.constraint(equalTo: self.buttonClose.leadingAnchor)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didSelectTag))
+        self.addGestureRecognizer(tap)
     }
     
-    func configureCell() {
+    private func configureCell() {
         guard let item = item else { return }
         
         labelTitle.text = item.title
@@ -98,9 +83,20 @@ class TagViewCell: UICollectionViewCell {
         
         heightOfButton?.constant = item.sizeOfRightImage.height
         widthOfButton?.constant = item.sizeOfRightImage.width
+        
+        self.layer.cornerRadius = item.cornerRadius
     }
     
-    @objc func buttonCloseClicked() {
+    @objc private func buttonCloseClicked() {
         rightSideButtonClickObserver?(self.item)
     }
+    
+    @objc private func didSelectTag() {
+        if let _item = item {
+            _item.isSelected = !_item.isSelected
+        }
+        configureCell()
+        itemClickObserver?(self.item)
+    }
+    
 }

@@ -8,8 +8,14 @@
 import UIKit
 
 struct TagViewAttribute {
+    enum TagArrangement {
+        case sequenceInRow
+        case splitInColumn
+    }
     var showTwoLines: Bool = false
     var background: UIColor = .lightGray
     var numberOfRow: Int = 2
     var spacingBetweenRows: CGFloat = 8
+    var tagArrangement: TagArrangement = .sequenceInRow
+    var removeItemOnRightImageClick: Bool = false
 }

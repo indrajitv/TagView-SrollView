@@ -7,22 +7,8 @@
 
 import UIKit
 
-public extension String {
-    func estimatedFrame(font: UIFont) -> CGRect {
-        let size = CGSize(width: 200, height: 1000) // temporary size
-        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        return NSString(string: self).boundingRect(with: size,
-                                                   options: options,
-                                                   attributes: [NSAttributedString.Key.font: font],
-                                                   context: nil)
-    }
-}
-
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true

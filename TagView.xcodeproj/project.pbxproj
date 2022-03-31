@@ -16,10 +16,8 @@
 		A590898127F18BC2006D7AC8 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898027F18BC2006D7AC8 /* TagView.swift */; };
 		A590898327F18CC2006D7AC8 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */; };
 		A590898527F18D21006D7AC8 /* TagViewAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898427F18D21006D7AC8 /* TagViewAttribute.swift */; };
-		A590898727F18E46006D7AC8 /* TagView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898627F18E46006D7AC8 /* TagView+Extension.swift */; };
 		A590898927F18EC3006D7AC8 /* TagViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898827F18EC3006D7AC8 /* TagViewItem.swift */; };
-		A590898B27F18F03006D7AC8 /* TagViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898A27F18F03006D7AC8 /* TagViewCell.swift */; };
-		A590898F27F2C431006D7AC8 /* LeftAlignedFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898E27F2C431006D7AC8 /* LeftAlignedFlow.swift */; };
+		A590898B27F18F03006D7AC8 /* TagContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898A27F18F03006D7AC8 /* TagContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,10 +32,8 @@
 		A590898027F18BC2006D7AC8 /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchor.swift"; sourceTree = "<group>"; };
 		A590898427F18D21006D7AC8 /* TagViewAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewAttribute.swift; sourceTree = "<group>"; };
-		A590898627F18E46006D7AC8 /* TagView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagView+Extension.swift"; sourceTree = "<group>"; };
 		A590898827F18EC3006D7AC8 /* TagViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewItem.swift; sourceTree = "<group>"; };
-		A590898A27F18F03006D7AC8 /* TagViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewCell.swift; sourceTree = "<group>"; };
-		A590898E27F2C431006D7AC8 /* LeftAlignedFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlow.swift; sourceTree = "<group>"; };
+		A590898A27F18F03006D7AC8 /* TagContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,12 +82,10 @@
 		A590897F27F18BA5006D7AC8 /* TagView */ = {
 			isa = PBXGroup;
 			children = (
-				A590898E27F2C431006D7AC8 /* LeftAlignedFlow.swift */,
 				A590898427F18D21006D7AC8 /* TagViewAttribute.swift */,
 				A590898827F18EC3006D7AC8 /* TagViewItem.swift */,
 				A590898027F18BC2006D7AC8 /* TagView.swift */,
-				A590898627F18E46006D7AC8 /* TagView+Extension.swift */,
-				A590898A27F18F03006D7AC8 /* TagViewCell.swift */,
+				A590898A27F18F03006D7AC8 /* TagContainer.swift */,
 			);
 			path = TagView;
 			sourceTree = "<group>";
@@ -168,11 +162,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A590897027F18B70006D7AC8 /* ViewController.swift in Sources */,
-				A590898B27F18F03006D7AC8 /* TagViewCell.swift in Sources */,
-				A590898727F18E46006D7AC8 /* TagView+Extension.swift in Sources */,
+				A590898B27F18F03006D7AC8 /* TagContainer.swift in Sources */,
 				A590898927F18EC3006D7AC8 /* TagViewItem.swift in Sources */,
 				A590896C27F18B70006D7AC8 /* AppDelegate.swift in Sources */,
-				A590898F27F2C431006D7AC8 /* LeftAlignedFlow.swift in Sources */,
 				A590898527F18D21006D7AC8 /* TagViewAttribute.swift in Sources */,
 				A590896E27F18B70006D7AC8 /* SceneDelegate.swift in Sources */,
 				A590898127F18BC2006D7AC8 /* TagView.swift in Sources */,
