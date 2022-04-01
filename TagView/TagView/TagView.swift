@@ -147,20 +147,30 @@ class TagView: UIView {
     private func getSizeOfCell(item: TagViewItem) -> CGSize {
         switch self.attribute.sizeCalculationType {
             case .auto(extraWidth: let extraWidth):
+                
                 let fonts = item.isSelected ? attribute.fonts.selected : attribute.fonts.unSelected
                 let size = estimatedFrame(string: item.title, font: fonts)
                 var totalWidth = size.width + extraWidth
                 
-                if self.attribute.expansionPolicy == .lessThanOrEqualToWidth,
-                   totalWidth > self.frame.width - (self.attribute.spacingBetweenRows * 2) {
-                    
-                    totalWidth = self.frame.width - (self.attribute.spacingBetweenRows * 2) - 40
-                    if item.rightSideImage != nil {
-                        totalWidth -= item.sizeOfRightImage.width
-                    }
-                    
+                switch self.attribute.widthExpansionPolicy {
+                    case .lessThanOrEqualToWidth:
+                      
+                        if totalWidth > self.frame.width - (self.attribute.spacingBetweenRows * 2) {
+                            totalWidth = self.frame.width - (self.attribute.spacingBetweenRows * 2) - 40
+                            if item.rightSideImage != nil {
+                                totalWidth -= item.sizeOfRightImage.width
+                            }
+                        }
+                        
+                        return .init(width: totalWidth, height: .zero)
+                    case .lessThanOrEqualTo(let limit):
+                        return .init(width: totalWidth > limit ? limit : totalWidth, height: .zero)
+                    case .automatic:
+                        return .init(width: totalWidth, height: .zero)
+                    case .userDefined(let width):
+                        return .init(width: width, height: .zero)
                 }
-                return .init(width: totalWidth, height: .zero)
+                
             case .manual(size: let size):
                 return size
         }

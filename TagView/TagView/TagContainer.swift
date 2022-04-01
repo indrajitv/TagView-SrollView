@@ -93,6 +93,10 @@ class TagContainer: UIView {
         labelTitle.textColor = item.isSelected ? generalAttributes.textColor.selected : generalAttributes.textColor.unSelected
         containerView.backgroundColor = item.isSelected ? generalAttributes.tagBackgroundColor.selected : generalAttributes.tagBackgroundColor.unSelected
         containerView.layer.cornerRadius = generalAttributes.cornerRadius
+        
+        containerView.layer.borderWidth = generalAttributes.border.width
+        containerView.layer.borderColor = generalAttributes.border.color.cgColor
+        containerView.isUserInteractionEnabled = generalAttributes.userInteraction
     }
     
     @objc private func buttonCloseClicked() {
