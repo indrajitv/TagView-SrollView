@@ -12,6 +12,7 @@ struct TagViewAttribute {
     var spacingBetweenRows: CGFloat = 8
     var tagArrangement: TagArrangement = .splitInColumn
     var removeItemOnRightImageClick: Bool = false
+    var expansionPolicy: ExpansionPolicy = .lessThanOrEqualToWidth
     
     let numberOfRow: Int
     let textColor, tagBackgroundColor: (selected: UIColor, unSelected: UIColor)
@@ -27,5 +28,10 @@ struct TagViewAttribute {
     enum SizeCalculationType {
         case auto(extraWidth: CGFloat)
         case manual(size: CGSize)
+    }
+    
+    enum ExpansionPolicy {
+        case lessThanOrEqualToWidth
+        case infinite
     }
 }

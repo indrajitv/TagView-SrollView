@@ -8,7 +8,7 @@
 import UIKit
 
 class TagView: UIView {
-   let attribute: TagViewAttribute
+    let attribute: TagViewAttribute
     
     var items: [TagViewItem] = [] {
         didSet {
@@ -47,7 +47,7 @@ class TagView: UIView {
     private func addTagsOnScrollView() {
         self.scrollView.subviews.forEach({ $0.removeFromSuperview() })
         self.layoutIfNeeded()
-       
+        
         let numberOfRow: Int = attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow
         var slots: [[TagViewItem]] = []
         
@@ -75,13 +75,13 @@ class TagView: UIView {
             var index = 0
             while index < self.items.count {
                 let _item = self.items[index]
-             
+                
                 var existingArray = slots[currentArrayIndex]
                 existingArray.append(_item)
                 slots[currentArrayIndex] = existingArray
                 
                 index += 1
-               
+                
                 if existingArray.count >= limitInOneRow, currentArrayIndex < numberOfRow-1 {
                     currentArrayIndex += 1
                 }
@@ -108,7 +108,7 @@ class TagView: UIView {
                 tagView.itemClickObserver = { [weak self] (selectedItem) in
                     self?.itemClickObserver?(selectedItem)
                 }
-               
+                
                 let size = self.getSizeOfTag(item: item)
                 self.scrollView.addSubview(tagView)
                 tagView.frame = .init(origin: .init(x: x, y: y), size: size)
@@ -149,7 +149,18 @@ class TagView: UIView {
             case .auto(extraWidth: let extraWidth):
                 let fonts = item.isSelected ? attribute.fonts.selected : attribute.fonts.unSelected
                 let size = estimatedFrame(string: item.title, font: fonts)
-                return .init(width: size.width + extraWidth, height: .zero)
+                var totalWidth = size.width + extraWidth
+                
+                if self.attribute.expansionPolicy == .lessThanOrEqualToWidth,
+                   totalWidth > self.frame.width - (self.attribute.spacingBetweenRows * 2) {
+                    
+                    totalWidth = self.frame.width - (self.attribute.spacingBetweenRows * 2) - 40
+                    if item.rightSideImage != nil {
+                        totalWidth -= item.sizeOfRightImage.width
+                    }
+                    
+                }
+                return .init(width: totalWidth, height: .zero)
             case .manual(size: let size):
                 return size
         }

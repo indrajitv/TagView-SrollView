@@ -35,8 +35,7 @@ class TagContainer: UIView {
     private let labelTitle: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.numberOfLines = 2
-        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 1
         return label
     }()
     
