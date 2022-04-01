@@ -8,15 +8,20 @@
 import UIKit
 
 class TagContainer: UIView {
-    
     private var labelTrailingConstraintWithView,
         labelTrailingConstraintWithButton: NSLayoutConstraint!
   
     private var heightOfButton, widthOfButton: NSLayoutConstraint!
     
-    private var item: TagViewItem?
+    private var item: TagViewItem
+    private var generalAttributes: TagViewAttribute
     
     var rightSideButtonClickObserver, itemClickObserver: ((_ item: TagViewItem?) -> ())?
+    
+    let containerView: UIView = {
+        let view = UIView()
+        return view
+    }()
     
     private lazy var buttonClose: UIButton = {
         let button = UIButton(type: .system)
@@ -35,9 +40,11 @@ class TagContainer: UIView {
         return label
     }()
     
-    init(item: TagViewItem) {
-        super.init(frame: .zero)
+    init(item: TagViewItem, generalAttributes: TagViewAttribute) {
         self.item = item
+        self.generalAttributes = generalAttributes
+        
+        super.init(frame: .zero)
         setupViews()
         configureCell()
     }
@@ -47,7 +54,11 @@ class TagContainer: UIView {
     }
     
     private func setupViews() {
-        self.addSubviews(views: [labelTitle, buttonClose])
+        
+        self.addSubview(containerView)
+        containerView.setFullOnSuperView(withSpacing: self.generalAttributes.spacingBetweenRows/2)
+        
+        containerView.addSubviews(views: [labelTitle, buttonClose])
    
         buttonClose.setCenterY()
         heightOfButton = buttonClose.heightAnchor.constraint(equalToConstant: 0)
@@ -55,13 +66,13 @@ class TagContainer: UIView {
         heightOfButton.isActive = true
         widthOfButton.isActive = true
         
-        buttonClose.setTrailing(with: self.trailingAnchor)
+        buttonClose.setTrailing(with: containerView.trailingAnchor)
         
-        labelTitle.setAnchors(top: topAnchor,
-                              bottom: bottomAnchor,
-                              leading: leadingAnchor)
+        labelTitle.setAnchors(top: containerView.topAnchor,
+                              bottom: containerView.bottomAnchor,
+                              leading: containerView.leadingAnchor)
         
-        labelTrailingConstraintWithView = labelTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        labelTrailingConstraintWithView = labelTitle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         labelTrailingConstraintWithButton = labelTitle.trailingAnchor.constraint(equalTo: self.buttonClose.leadingAnchor)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didSelectTag))
@@ -69,22 +80,20 @@ class TagContainer: UIView {
     }
     
     private func configureCell() {
-        guard let item = item else { return }
-        
         labelTitle.text = item.title
-        labelTitle.font = item.getFonts()
-        labelTitle.textColor = item.getTextColor()
-        buttonClose.setImage(item.rightSizeImage, for: .normal)
-        backgroundColor = item.getBackground()
+        buttonClose.setImage(item.rightSideImage, for: .normal)
         
-        self.buttonClose.isHidden = item.rightSizeImage == nil
-        labelTrailingConstraintWithView.isActive = item.rightSizeImage == nil
-        labelTrailingConstraintWithButton.isActive = item.rightSizeImage != nil
+        self.buttonClose.isHidden = item.rightSideImage == nil
+        labelTrailingConstraintWithView.isActive = item.rightSideImage == nil
+        labelTrailingConstraintWithButton.isActive = item.rightSideImage != nil
         
         heightOfButton?.constant = item.sizeOfRightImage.height
         widthOfButton?.constant = item.sizeOfRightImage.width
         
-        self.layer.cornerRadius = item.cornerRadius
+        labelTitle.font = item.isSelected ? generalAttributes.fonts.selected : generalAttributes.fonts.unSelected
+        labelTitle.textColor = item.isSelected ? generalAttributes.textColor.selected : generalAttributes.textColor.unSelected
+        containerView.backgroundColor = item.isSelected ? generalAttributes.tagBackgroundColor.selected : generalAttributes.tagBackgroundColor.unSelected
+        containerView.layer.cornerRadius = generalAttributes.cornerRadius
     }
     
     @objc private func buttonCloseClicked() {
@@ -92,9 +101,7 @@ class TagContainer: UIView {
     }
     
     @objc private func didSelectTag() {
-        if let _item = item {
-            _item.isSelected = !_item.isSelected
-        }
+        item.isSelected = !item.isSelected
         configureCell()
         itemClickObserver?(self.item)
     }

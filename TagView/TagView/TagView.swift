@@ -8,7 +8,7 @@
 import UIKit
 
 class TagView: UIView {
-    let attribute: TagViewAttribute
+   let attribute: TagViewAttribute
     
     var items: [TagViewItem] = [] {
         didSet {
@@ -22,10 +22,7 @@ class TagView: UIView {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
-        sv.contentInset = .init(top: 0,
-                                left: self.attribute.spacingBetweenRows/CGFloat(self.attribute.numberOfRow),
-                                bottom: 0,
-                                right: self.attribute.spacingBetweenRows/CGFloat(self.attribute.numberOfRow))
+        sv.contentInset.right = self.attribute.spacingBetweenRows
         return sv
     }()
     
@@ -52,7 +49,6 @@ class TagView: UIView {
         self.layoutIfNeeded()
        
         let numberOfRow: Int = attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow
-        let spacingBwLine: CGFloat = (attribute.spacingBetweenRows/CGFloat(numberOfRow))
         var slots: [[TagViewItem]] = []
         
         for _ in 0..<numberOfRow {
@@ -92,14 +88,14 @@ class TagView: UIView {
             }
         }
         
-        var y: CGFloat = self.attribute.spacingBetweenRows/CGFloat(numberOfRow)/2
+        var y: CGFloat = self.attribute.spacingBetweenRows/2
         var maxX: CGFloat = 0
         
         for slot in slots {
-            var x: CGFloat = 0
+            var x: CGFloat = self.attribute.spacingBetweenRows/2
             var maxHeight: CGFloat = 0
             for item in slot {
-                let tagView = TagContainer(item: item)
+                let tagView = TagContainer(item: item, generalAttributes: self.attribute)
                 
                 tagView.rightSideButtonClickObserver = { [weak self] (selectedItem) in
                     guard let self = self else { return }
@@ -116,7 +112,7 @@ class TagView: UIView {
                 let size = self.getSizeOfTag(item: item)
                 self.scrollView.addSubview(tagView)
                 tagView.frame = .init(origin: .init(x: x, y: y), size: size)
-                x += (size.width + spacingBwLine)
+                x += size.width
                 
                 if size.height > maxHeight {
                     maxHeight = size.height
@@ -125,7 +121,7 @@ class TagView: UIView {
             if x > maxX {
                 maxX = x
             }
-            y += (spacingBwLine + maxHeight)
+            y += maxHeight
         }
         
         self.scrollView.contentSize = .init(width: maxX,
@@ -133,19 +129,38 @@ class TagView: UIView {
     }
     
     private func getSizeOfTag(item: TagViewItem) -> CGSize {
-        let size =  item.getSizeOfCell()
-        if size.height == 0 {
+        let size =  getSizeOfCell(item: item)
+        if size.height == 0 { // auto
             let numberOfRow: CGFloat = CGFloat(attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow)
-            let spacingBwLine: CGFloat = (attribute.spacingBetweenRows/numberOfRow)
-            let heightOfCell: CGFloat = self.frame.height/numberOfRow - spacingBwLine
-            return .init(width: size.width + (item.rightSizeImage != nil ? heightOfCell : 0),
-                         height: heightOfCell)
+            let heightOfCell: CGFloat = (self.frame.height/numberOfRow) - self.attribute.spacingBetweenRows/numberOfRow
+            let width: CGFloat = size.width + (item.rightSideImage != nil ? heightOfCell : 0)
+            return .init(width: width, height: heightOfCell)
         } else {
             return size
         }
     }
     
-    func removeItemAndRefresh(item: TagViewItem) {
+    private func removeItemAndRefresh(item: TagViewItem) {
         self.items.removeAll(where: { $0.id == item.id && $0.title == item.title })
+    }
+    
+    private func getSizeOfCell(item: TagViewItem) -> CGSize {
+        switch self.attribute.sizeCalculationType {
+            case .auto(extraWidth: let extraWidth):
+                let fonts = item.isSelected ? attribute.fonts.selected : attribute.fonts.unSelected
+                let size = estimatedFrame(string: item.title, font: fonts)
+                return .init(width: size.width + extraWidth, height: .zero)
+            case .manual(size: let size):
+                return size
+        }
+    }
+    
+    private func estimatedFrame(string: String, font: UIFont) -> CGRect {
+        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: string).boundingRect(with: size,
+                                                     options: options,
+                                                     attributes: [NSAttributedString.Key.font: font],
+                                                     context: nil)
     }
 }

@@ -9,11 +9,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let tag1 = TagView(attribute: TagViewAttribute())
+    let tag1 = TagView(attribute: TagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 2, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
+                                                   sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
     
-    let tag2 = TagView(attribute: TagViewAttribute(numberOfRow: 1))
+    let tag2 = TagView(attribute: TagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 1, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
+                                                   sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
     
-    let tag3 = TagView(attribute: TagViewAttribute(numberOfRow: 3, spacingBetweenRows: 16))
+    let tag3 = TagView(attribute: TagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 3, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
+                                                   sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,54 +24,16 @@ class ViewController: UIViewController {
         
         self.view.addSubview(tag1)
         
-        tag1.setHeight(height: 70)
+        tag1.setHeight(height: 100)
         tag1.setAnchors(top: self.view.topAnchor,
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
                         topConstant: 100)
-        
-        tag1.items = [
-            
-            .init(title: "1 Something Important", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .black), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "2 Some random string", id: "Item1", rightSizeImage: nil, textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "3 Student subjects", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "4 Course overview is done", id: "Item1", rightSizeImage: nil, textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "5 showCrossButton", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "6 systemFont", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "7 background", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "8 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "9 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "10 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "11 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "12 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "13 Long text long long text to test", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "14 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "15 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "16 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "17 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "18 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "19 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-            
-                .init(title: "20 Item", id: "Item1", rightSizeImage: UIImage(named: "close"), textColor: (selected: .black, unSelected: .darkGray), backgroundColor: (selected: .yellow, unSelected: .systemRed), fonts: (selected: .systemFont(ofSize: 14, weight: .bold), unSelected: .systemFont(ofSize: 14, weight: .regular)), isSelected: false),
-        ]
+        var array = [TagViewItem]()
+        for i in 1...20 {
+            array.append(.init(title: randomWord() + " \(i)", id: UUID().uuidString, rightSizeImage: UIImage(named: "close")))
+        }
+        tag1.items = array
         
         tag1.itemClickObserver = { item in
             print("did select cell", item?.title ?? "-")
@@ -80,20 +45,30 @@ class ViewController: UIViewController {
         
         self.view.addSubview(tag2)
         
-        tag2.setHeight(height: 35)
+        tag2.setHeight(height: 50)
         tag2.setAnchors(top: self.view.topAnchor,
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
-                        topConstant: 400)
+                        topConstant: 250)
         tag2.items = tag1.items
-//        
+        
         self.view.addSubview(tag3)
         
-        tag3.setHeight(height: 130)
+        tag3.setHeight(height: 150)
         tag3.setAnchors(top: self.view.topAnchor,
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
-                        topConstant: 600)
+                        topConstant: 350)
         tag3.items = tag1.items
     }
+    
+    func randomWord() -> String {
+        var x = ""
+        for _ in 0..<Int.random(in: 5...30){
+            let string = String(format: "%c", Int.random(in: 97..<123)) as String
+            x+=string
+        }
+        return x
+    }
 }
+

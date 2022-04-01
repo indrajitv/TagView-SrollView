@@ -8,14 +8,24 @@
 import UIKit
 
 struct TagViewAttribute {
+    var background: UIColor = .white
+    var spacingBetweenRows: CGFloat = 8
+    var tagArrangement: TagArrangement = .splitInColumn
+    var removeItemOnRightImageClick: Bool = false
+    
+    let numberOfRow: Int
+    let textColor, tagBackgroundColor: (selected: UIColor, unSelected: UIColor)
+    let fonts: (selected: UIFont, unSelected: UIFont)
+    let sizeCalculationType: SizeCalculationType
+    let cornerRadius: CGFloat
+    
     enum TagArrangement {
         case sequenceInRow
         case splitInColumn
     }
-    var showTwoLines: Bool = false
-    var background: UIColor = .lightGray
-    var numberOfRow: Int = 2
-    var spacingBetweenRows: CGFloat = 8
-    var tagArrangement: TagArrangement = .sequenceInRow
-    var removeItemOnRightImageClick: Bool = false
+    
+    enum SizeCalculationType {
+        case auto(extraWidth: CGFloat)
+        case manual(size: CGSize)
+    }
 }
