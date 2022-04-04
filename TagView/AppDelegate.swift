@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  TagView
+//  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
 //

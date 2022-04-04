@@ -1,22 +1,22 @@
 //
-//  TagView.swift
-//  TagView
+//  CPTagView.swift
+//  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
 //
 
 import UIKit
 
-class TagView: UIView {
-    let attribute: TagViewAttribute
+class CPTagView: UIView {
+    let attribute: CPTagViewAttribute
     
-    var items: [TagViewItem] = [] {
+    var items: [CPTagViewItem] = [] {
         didSet {
             self.addTagsOnScrollView()
         }
     }
     
-    var rightSideButtonClickObserver, itemClickObserver: ((_ item: TagViewItem?) -> ())?
+    var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?) -> ())?
     
     lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -26,7 +26,7 @@ class TagView: UIView {
         return sv
     }()
     
-    init(attribute: TagViewAttribute) {
+    init(attribute: CPTagViewAttribute) {
         self.attribute = attribute
         
         super.init(frame: .zero)
@@ -49,7 +49,7 @@ class TagView: UIView {
         self.layoutIfNeeded()
         
         let numberOfRow: Int = attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow
-        var slots: [[TagViewItem]] = []
+        var slots: [[CPTagViewItem]] = []
         
         for _ in 0..<numberOfRow {
             slots.append([])
@@ -88,14 +88,14 @@ class TagView: UIView {
             }
         }
         
-        var y: CGFloat = self.attribute.spacingBetweenRows/2
+        var y: CGFloat = 0
         var maxX: CGFloat = 0
         
         for slot in slots {
-            var x: CGFloat = self.attribute.spacingBetweenRows/2
+            var x: CGFloat = 0
             var maxHeight: CGFloat = 0
             for item in slot {
-                let tagView = TagContainer(item: item, generalAttributes: self.attribute)
+                let tagView = CPTagContainer(item: item, generalAttributes: self.attribute)
                 
                 tagView.rightSideButtonClickObserver = { [weak self] (selectedItem) in
                     guard let self = self else { return }
@@ -112,7 +112,7 @@ class TagView: UIView {
                 let size = self.getSizeOfTag(item: item)
                 self.scrollView.addSubview(tagView)
                 tagView.frame = .init(origin: .init(x: x, y: y), size: size)
-                x += size.width
+                x += size.width + self.attribute.spacingBetweenRows
                 
                 if size.height > maxHeight {
                     maxHeight = size.height
@@ -121,30 +121,32 @@ class TagView: UIView {
             if x > maxX {
                 maxX = x
             }
-            y += maxHeight
+            y += maxHeight + attribute.spacingBetweenRows
         }
         
         self.scrollView.contentSize = .init(width: maxX,
                                             height: self.scrollView.frame.height)
     }
     
-    private func getSizeOfTag(item: TagViewItem) -> CGSize {
+    private func getSizeOfTag(item: CPTagViewItem) -> CGSize {
         let size =  getSizeOfCell(item: item)
         if size.height == 0 { // auto
             let numberOfRow: CGFloat = CGFloat(attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow)
-            let heightOfCell: CGFloat = (self.frame.height/numberOfRow) - self.attribute.spacingBetweenRows/numberOfRow
+            let spacingBetweenRows: CGFloat = self.attribute.numberOfRow > 1 ? self.attribute.spacingBetweenRows : 0
+            let heightOfCell: CGFloat = (self.frame.height/numberOfRow) - spacingBetweenRows
             let width: CGFloat = size.width + (item.rightSideImage != nil ? heightOfCell : 0)
-            return .init(width: width, height: heightOfCell)
+            return .init(width: width,
+                         height: heightOfCell + (numberOfRow > 1 ? attribute.spacingBetweenRows / numberOfRow : 0))
         } else {
             return size
         }
     }
     
-    private func removeItemAndRefresh(item: TagViewItem) {
+    private func removeItemAndRefresh(item: CPTagViewItem) {
         self.items.removeAll(where: { $0.id == item.id && $0.title == item.title })
     }
     
-    private func getSizeOfCell(item: TagViewItem) -> CGSize {
+    private func getSizeOfCell(item: CPTagViewItem) -> CGSize {
         switch self.attribute.sizeCalculationType {
             case .auto(extraWidth: let extraWidth):
                 

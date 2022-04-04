@@ -1,13 +1,13 @@
 //
-//  TagViewAttribute.swift
-//  TagView
+//  CPTagViewAttribute.swift
+//  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
 //
 
 import UIKit
 
-struct TagViewAttribute {
+struct CPTagViewAttribute {
     var background: UIColor = .white
     var spacingBetweenRows: CGFloat = 8
     var tagArrangement: TagArrangement = .splitInColumn

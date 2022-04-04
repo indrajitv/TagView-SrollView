@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  TagView
+//  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
 //
@@ -9,13 +9,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let tag1 = TagView(attribute: TagViewAttribute(background: .lightGray, spacingBetweenRows: 4, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 2, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
+    let tag1 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 2, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
                                                    sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
     
-    let tag2 = TagView(attribute: TagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 1, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
+    let tag2 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 1, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
                                                    sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
     
-    let tag3 = TagView(attribute: TagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 3, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
+    let tag3 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 3, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
                                                    sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
     
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
                         topConstant: 100)
-        var array = [TagViewItem]()
+        var array = [CPTagViewItem]()
         for i in 1...20 {
             if i == 1 {
                 array.append(.init(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a", id: UUID().uuidString, rightSizeImage: UIImage(named: "close")))

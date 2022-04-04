@@ -1,13 +1,13 @@
 //
-//  TagViewItem.swift
-//  TagView
+//  CPTagViewItem.swift
+//  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
 //
 
 import UIKit
 
-class TagViewItem {
+class CPTagViewItem {
     let title, id: String
     var isSelected: Bool
     let rightSideImage: UIImage?

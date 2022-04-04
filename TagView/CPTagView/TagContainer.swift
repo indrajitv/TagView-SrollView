@@ -1,22 +1,22 @@
 //
 //  TagViewCell.swift
-//  TagView
+//  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
 //
 
 import UIKit
 
-class TagContainer: UIView {
+class CPTagContainer: UIView {
     private var labelTrailingConstraintWithView,
         labelTrailingConstraintWithButton: NSLayoutConstraint!
   
     private var heightOfButton, widthOfButton: NSLayoutConstraint!
     
-    private var item: TagViewItem
-    private var generalAttributes: TagViewAttribute
+    private var item: CPTagViewItem
+    private var generalAttributes: CPTagViewAttribute
     
-    var rightSideButtonClickObserver, itemClickObserver: ((_ item: TagViewItem?) -> ())?
+    var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?) -> ())?
     
     let containerView: UIView = {
         let view = UIView()
@@ -39,7 +39,7 @@ class TagContainer: UIView {
         return label
     }()
     
-    init(item: TagViewItem, generalAttributes: TagViewAttribute) {
+    init(item: CPTagViewItem, generalAttributes: CPTagViewAttribute) {
         self.item = item
         self.generalAttributes = generalAttributes
         
@@ -55,7 +55,7 @@ class TagContainer: UIView {
     private func setupViews() {
         
         self.addSubview(containerView)
-        containerView.setFullOnSuperView(withSpacing: self.generalAttributes.spacingBetweenRows/2)
+        containerView.setFullOnSuperView()
         
         containerView.addSubviews(views: [labelTitle, buttonClose])
    
