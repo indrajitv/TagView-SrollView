@@ -80,14 +80,16 @@ class CPTagContainer: UIView {
     
     private func configureCell() {
         labelTitle.text = item.title
-        buttonClose.setImage(item.rightSideImage, for: .normal)
+        let rightSideImage = item.rightSideImage ?? generalAttributes.rightSideImage
+        buttonClose.setImage(rightSideImage, for: .normal)
         
-        self.buttonClose.isHidden = item.rightSideImage == nil
-        labelTrailingConstraintWithView.isActive = item.rightSideImage == nil
-        labelTrailingConstraintWithButton.isActive = item.rightSideImage != nil
+        self.buttonClose.isHidden = rightSideImage == nil
+        labelTrailingConstraintWithView.isActive = rightSideImage == nil
+        labelTrailingConstraintWithButton.isActive = rightSideImage != nil
         
-        heightOfButton?.constant = item.sizeOfRightImage.height
-        widthOfButton?.constant = item.sizeOfRightImage.width
+        let sizeOfRightImage = item.sizeOfRightImage ?? self.generalAttributes.sizeOfRightImage
+        heightOfButton?.constant = sizeOfRightImage.height
+        widthOfButton?.constant = sizeOfRightImage.width
         
         labelTitle.font = item.isSelected ? generalAttributes.fonts.selected : generalAttributes.fonts.unSelected
         labelTitle.textColor = item.isSelected ? generalAttributes.textColor.selected : generalAttributes.textColor.unSelected
@@ -108,5 +110,5 @@ class CPTagContainer: UIView {
         configureCell()
         itemClickObserver?(self.item)
     }
-    
+
 }

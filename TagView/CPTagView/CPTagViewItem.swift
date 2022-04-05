@@ -8,16 +8,16 @@
 import UIKit
 
 class CPTagViewItem {
-    let title, id: String
-    var isSelected: Bool
-    let rightSideImage: UIImage?
-    let sizeOfRightImage: CGSize
+    public let title, id: String
+    public var isSelected: Bool
+    public let rightSideImage: UIImage?
+    public let sizeOfRightImage: CGSize?
     
-    init(title: String,
-                  id: String,
-                  rightSizeImage: UIImage? = nil,
-                  sizeOfRightImage: CGSize = .init(width: 20, height: 20),
-                  isSelected: Bool = false) {
+    public init(title: String,
+                id: String,
+                rightSizeImage: UIImage? = nil,
+                sizeOfRightImage: CGSize? = nil,
+                isSelected: Bool = false) {
         self.title = title
         self.id = id
         self.isSelected = isSelected

@@ -9,14 +9,41 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let tag1 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 2, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
-                                                   sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
+    let tag1 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray,
+                                                       spacingBetweenRows: 8,
+                                                       tagArrangement: .splitInColumn,
+                                                       removeItemOnRightImageClick: false,
+                                                       numberOfRow: 2,
+                                                       textColor: (selected: .black,
+                                                                   unSelected: .black),
+                                                       tagBackgroundColor: (selected: .yellow, unSelected: .yellow),
+                                                       fonts: (selected: UIFont.systemFont(ofSize: 12),
+                                                               unSelected: UIFont.systemFont(ofSize: 12)),
+                                                       sizeCalculationType: .auto,
+                                                       cornerRadius: 3))
     
-    let tag2 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 1, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
-                                                   sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
+    let tag2 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray,
+                                                       spacingBetweenRows: 8,
+                                                       tagArrangement: .splitInColumn,
+                                                       removeItemOnRightImageClick: false,
+                                                       numberOfRow: 1, textColor: (selected: .black, unSelected: .black),
+                                                       tagBackgroundColor: (selected: .yellow,
+                                                                            unSelected: .yellow),
+                                                       fonts: (selected: UIFont.systemFont(ofSize: 12),
+                                                               unSelected: UIFont.systemFont(ofSize: 12)),
+                                                       sizeCalculationType: .auto,
+                                                       cornerRadius: 3))
     
-    let tag3 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray, spacingBetweenRows: 8, tagArrangement: .splitInColumn, removeItemOnRightImageClick: false, numberOfRow: 3, textColor: (selected: .black, unSelected: .black), tagBackgroundColor: (selected: .yellow, unSelected: .yellow), fonts: (selected: UIFont.systemFont(ofSize: 12), unSelected: UIFont.systemFont(ofSize: 12)),
-                                                   sizeCalculationType: .auto(extraWidth: 10), cornerRadius: 3))
+    let tag3 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray,
+                                                       spacingBetweenRows: 8,
+                                                       tagArrangement: .vertical,
+                                                       removeItemOnRightImageClick: false,
+                                                       numberOfRow: 3, textColor: (selected: .black, unSelected: .black),
+                                                       tagBackgroundColor: (selected: .yellow, unSelected: .yellow),
+                                                       fonts: (selected: UIFont.systemFont(ofSize: 12),
+                                                               unSelected: UIFont.systemFont(ofSize: 12)),
+                                                       sizeCalculationType: .auto,
+                                                       cornerRadius: 3))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +61,7 @@ class ViewController: UIViewController {
             if i == 1 {
                 array.append(.init(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a", id: UUID().uuidString, rightSizeImage: UIImage(named: "close")))
             } else {
-                array.append(.init(title: randomWord() + " \(i)", id: UUID().uuidString, rightSizeImage: UIImage(named: "close")))
+                array.append(.init(title: randomWord() + " \(i)", id: UUID().uuidString))
             }
             
         }

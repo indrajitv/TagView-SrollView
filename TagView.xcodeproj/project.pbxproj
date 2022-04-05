@@ -17,7 +17,7 @@
 		A590898327F18CC2006D7AC8 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */; };
 		A590898527F18D21006D7AC8 /* CPTagViewAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898427F18D21006D7AC8 /* CPTagViewAttribute.swift */; };
 		A590898927F18EC3006D7AC8 /* CPTagViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898827F18EC3006D7AC8 /* CPTagViewItem.swift */; };
-		A590898B27F18F03006D7AC8 /* TagContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898A27F18F03006D7AC8 /* TagContainer.swift */; };
+		A590898B27F18F03006D7AC8 /* CPTagContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898A27F18F03006D7AC8 /* CPTagContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchor.swift"; sourceTree = "<group>"; };
 		A590898427F18D21006D7AC8 /* CPTagViewAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPTagViewAttribute.swift; sourceTree = "<group>"; };
 		A590898827F18EC3006D7AC8 /* CPTagViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPTagViewItem.swift; sourceTree = "<group>"; };
-		A590898A27F18F03006D7AC8 /* TagContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagContainer.swift; sourceTree = "<group>"; };
+		A590898A27F18F03006D7AC8 /* CPTagContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPTagContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +85,7 @@
 				A590898427F18D21006D7AC8 /* CPTagViewAttribute.swift */,
 				A590898827F18EC3006D7AC8 /* CPTagViewItem.swift */,
 				A590898027F18BC2006D7AC8 /* CPTagView.swift */,
-				A590898A27F18F03006D7AC8 /* TagContainer.swift */,
+				A590898A27F18F03006D7AC8 /* CPTagContainer.swift */,
 			);
 			path = CPTagView;
 			sourceTree = "<group>";
@@ -162,7 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A590897027F18B70006D7AC8 /* ViewController.swift in Sources */,
-				A590898B27F18F03006D7AC8 /* TagContainer.swift in Sources */,
+				A590898B27F18F03006D7AC8 /* CPTagContainer.swift in Sources */,
 				A590898927F18EC3006D7AC8 /* CPTagViewItem.swift in Sources */,
 				A590896C27F18B70006D7AC8 /* AppDelegate.swift in Sources */,
 				A590898527F18D21006D7AC8 /* CPTagViewAttribute.swift in Sources */,
