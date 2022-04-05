@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CPTagViewItem {
+public class CPTagViewItem {
     public let title, id: String
     public var isSelected: Bool
     public let rightSideImage: UIImage?

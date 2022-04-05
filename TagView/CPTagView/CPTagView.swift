@@ -7,16 +7,16 @@
 
 import UIKit
 
-class CPTagView: UIView {
+public class CPTagsView: UIView {
     let attribute: CPTagViewAttribute
     
-    var items: [CPTagViewItem] = [] {
+    public var items: [CPTagViewItem] = [] {
         didSet {
             self.addTagsOnScrollView()
         }
     }
     
-    var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?) -> ())?
+    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?) -> ())?
     
     lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -26,7 +26,7 @@ class CPTagView: UIView {
         return sv
     }()
     
-    init(attribute: CPTagViewAttribute) {
+    public init(attribute: CPTagViewAttribute) {
         self.attribute = attribute
         
         super.init(frame: .zero)
@@ -133,7 +133,7 @@ class CPTagView: UIView {
     private func addTagsInVerticalStyle() {
         var x: CGFloat = 0
         var y: CGFloat = 0
-
+        
         var maxY: CGFloat = 0
         for item in self.items {
             let tagView = CPTagContainer(item: item, generalAttributes: self.attribute)
@@ -204,7 +204,7 @@ class CPTagView: UIView {
                     case .automatic:
                         break
                 }
-               
+                
                 if attribute.tagArrangement == .vertical {
                     sizeOfCell = .init(width: totalWidth, height: fonts.pointSize * 2.5) // height is 2.5 times of pointSize
                 } else {

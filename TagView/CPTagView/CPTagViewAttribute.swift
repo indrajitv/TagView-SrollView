@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct CPTagViewAttribute {
+public struct CPTagViewAttribute {
     let background: UIColor
     let spacingBetweenRows: CGFloat
     let tagArrangement: TagArrangement
