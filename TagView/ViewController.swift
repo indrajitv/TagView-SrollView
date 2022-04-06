@@ -9,46 +9,48 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let tag1 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray,
-                                                       spacingBetweenRows: 8,
-                                                       tagArrangement: .splitInColumn,
-                                                       removeItemOnRightImageClick: false,
-                                                       numberOfRow: 2,
-                                                       textColor: (selected: .black,
-                                                                   unSelected: .black),
-                                                       tagBackgroundColor: (selected: .yellow, unSelected: .yellow),
-                                                       fonts: (selected: UIFont.systemFont(ofSize: 12),
-                                                               unSelected: UIFont.systemFont(ofSize: 12)),
-                                                       sizeCalculationType: .auto,
-                                                       cornerRadius: 3))
+    lazy var tag1: CPTagsView = {
+        var att = CPTagViewAttribute(
+                                  textColor: (normal: .blue,
+                                              selected: .black),
+                                  tagBackgroundColor: (normal: .white, selected: .lightGray),
+                                  fonts: (normal: UIFont.systemFont(ofSize: 12),
+                                          selected: UIFont.systemFont(ofSize: 12)))
+        att.shadow = (.init(width: -1, height: 1), .black)
+        att.rightSizeImageTint = .blue
+        att.numberOfRow = 3
+        return CPTagsView(attribute: att)
+    }()
     
-    let tag2 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray,
-                                                       spacingBetweenRows: 8,
-                                                       tagArrangement: .splitInColumn,
-                                                       removeItemOnRightImageClick: false,
-                                                       numberOfRow: 1, textColor: (selected: .black, unSelected: .black),
-                                                       tagBackgroundColor: (selected: .yellow,
-                                                                            unSelected: .yellow),
-                                                       fonts: (selected: UIFont.systemFont(ofSize: 12),
-                                                               unSelected: UIFont.systemFont(ofSize: 12)),
-                                                       sizeCalculationType: .auto,
-                                                       cornerRadius: 3))
+    lazy var tag2: CPTagsView = {
+        var att = CPTagViewAttribute(
+            textColor: (normal: .blue,
+                        selected: .black),
+            tagBackgroundColor: (normal: .white, selected: .lightGray),
+            fonts: (normal: UIFont.systemFont(ofSize: 12),
+                    selected: UIFont.systemFont(ofSize: 12)))
+        att.shadow = (.init(width: -1, height: 1), .black)
+        att.rightSizeImageTint = .blue
+        return CPTagsView(attribute: att)
+    }()
     
-    let tag3 = CPTagView(attribute: CPTagViewAttribute(background: .lightGray,
-                                                       spacingBetweenRows: 8,
-                                                       tagArrangement: .vertical,
-                                                       removeItemOnRightImageClick: false,
-                                                       numberOfRow: 3, textColor: (selected: .black, unSelected: .black),
-                                                       tagBackgroundColor: (selected: .yellow, unSelected: .yellow),
-                                                       fonts: (selected: UIFont.systemFont(ofSize: 12),
-                                                               unSelected: UIFont.systemFont(ofSize: 12)),
-                                                       sizeCalculationType: .auto,
-                                                       cornerRadius: 3))
+    lazy var tag3: CPTagsView = {
+        var att = CPTagViewAttribute(
+            textColor: (normal: .blue,
+                        selected: .black),
+            tagBackgroundColor: (normal: .white, selected: .lightGray),
+            fonts: (normal: UIFont.systemFont(ofSize: 12),
+                    selected: UIFont.systemFont(ofSize: 12)))
+        att.shadow = (.init(width: -1, height: 1), .black)
+        att.rightSizeImageTint = .blue
+        att.tagArrangement = .vertical
+        return CPTagsView(attribute: att)
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+       
         self.view.addSubview(tag1)
         
         tag1.setHeight(height: 100)
@@ -59,7 +61,9 @@ class ViewController: UIViewController {
         var array = [CPTagViewItem]()
         for i in 1...20 {
             if i == 1 {
-                array.append(.init(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a", id: UUID().uuidString, rightSizeImage: UIImage(named: "close")))
+                let item: CPTagViewItem = .init(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a", id: UUID().uuidString)
+                item.rightSideImage = (image: UIImage(imageLiteralResourceName: "close"), size: .init(width: 20, height: 20))
+                array.append(item)
             } else {
                 array.append(.init(title: randomWord() + " \(i)", id: UUID().uuidString))
             }
@@ -67,11 +71,11 @@ class ViewController: UIViewController {
         }
         tag1.items = array
         
-        tag1.itemClickObserver = { item in
+        tag1.itemClickObserver = { item, index in
             print("did select cell", item?.title ?? "-")
         }
         
-        tag1.rightSideButtonClickObserver = { item in
+        tag1.rightSideButtonClickObserver = { item, index in
             print("did select button", item?.title ?? "-")
         }
         

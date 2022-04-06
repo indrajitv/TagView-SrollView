@@ -7,53 +7,36 @@
 
 import UIKit
 
-public struct CPTagViewAttribute {
-    let background: UIColor
-    let spacingBetweenRows: CGFloat
-    let tagArrangement: TagArrangement
-    let removeItemOnRightImageClick: Bool
-    let widthExpansionPolicy: WidthExpansionPolicy
+public class CPTagViewAttribute {
+    let textColor, tagBackgroundColor: (normal: UIColor, selected: UIColor)
+    let fonts: (normal: UIFont, selected: UIFont)
     
-    let border: (width: CGFloat, color: UIColor) = (0, .clear)
-    let userInteraction: Bool = true
+    public var background: UIColor = .white
+    public var spacingBetweenRows: CGFloat = 8
+    public var tagArrangement: TagArrangement = .splitInColumn
+    public var removeItemOnRightImageClick: Bool = false
+    public var widthExpansionPolicy: WidthExpansionPolicy = .lessThanOrEqualToWidth
+    public var numberOfRow: Int = 1
     
-    let numberOfRow: Int
-    let textColor, tagBackgroundColor: (selected: UIColor, unSelected: UIColor)
-    let fonts: (selected: UIFont, unSelected: UIFont)
-    let sizeCalculationType: SizeCalculationType
-    let cornerRadius: CGFloat
+    public var border: (normal: (width: CGFloat, color: UIColor),
+                        selected: (width: CGFloat, color: UIColor))? = nil
+    public var userInteraction: Bool = true
+    public var sizeCalculationType: SizeCalculationType = .auto
+    public var cornerRadius: (normal: CGFloat, selected: CGFloat) = (3, 3)
     
-    let rightSideImage: UIImage? // If tag individual item has rightSideImage then this will not reflect.
-    let sizeOfRightImage: CGSize// If tag individual item has sizeOfRightImage then this will not reflect.
-    let extraWidth: CGFloat = 0
+    public var rightSideImage: (image: UIImage, size: CGSize)? // If tag individual item has rightSideImage then this will not reflect.
+    public var extraWidth: CGFloat = 0
+    public var shadow: (offset: CGSize, color: UIColor)?
+    public var shadowOpacity: Float = 0.3
+    public var contentInset: UIEdgeInsets?
+    public var rightSizeImageTint: UIColor?
+    public var selectionStyle: CPTagsSelectionStyle = .multiple
     
-    public init(background: UIColor = .white,
-                spacingBetweenRows: CGFloat = 8,
-                tagArrangement: CPTagViewAttribute.TagArrangement = .splitInColumn,
-                removeItemOnRightImageClick: Bool = false,
-                widthExpansionPolicy: CPTagViewAttribute.WidthExpansionPolicy = .lessThanOrEqualToWidth,
-                numberOfRow: Int,
-                textColor: (selected: UIColor, unSelected: UIColor),
-                tagBackgroundColor: (selected: UIColor, unSelected: UIColor),
-                fonts: (selected: UIFont, unSelected: UIFont),
-                sizeCalculationType: CPTagViewAttribute.SizeCalculationType,
-                cornerRadius: CGFloat,
-                rightSideImage: UIImage? = nil,
-                sizeOfRightImage: CGSize = .init(width: 20, height: 20), extraWidth: CGFloat = 0) {
-        
-        self.background = background
-        self.spacingBetweenRows = spacingBetweenRows
-        self.tagArrangement = tagArrangement
-        self.removeItemOnRightImageClick = removeItemOnRightImageClick
-        self.widthExpansionPolicy = widthExpansionPolicy
-        self.numberOfRow = numberOfRow
+    init(textColor: (normal: UIColor, selected: UIColor),
+         tagBackgroundColor: (normal: UIColor, selected: UIColor), fonts: (normal: UIFont, selected: UIFont)) {
         self.textColor = textColor
         self.tagBackgroundColor = tagBackgroundColor
         self.fonts = fonts
-        self.sizeCalculationType = sizeCalculationType
-        self.cornerRadius = cornerRadius
-        self.rightSideImage = rightSideImage
-        self.sizeOfRightImage = sizeOfRightImage
     }
     
     public enum TagArrangement {
@@ -72,5 +55,10 @@ public struct CPTagViewAttribute {
         case lessThanOrEqualTo(limit: CGFloat)
         case userDefined(width: CGFloat)
         case automatic
+    }
+    
+    public enum CPTagsSelectionStyle {
+        case single
+        case multiple
     }
 }

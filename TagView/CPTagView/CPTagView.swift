@@ -8,6 +8,7 @@
 import UIKit
 
 public class CPTagsView: UIView {
+    var previousSelected: CPTagContainer?
     let attribute: CPTagViewAttribute
     
     public var items: [CPTagViewItem] = [] {
@@ -16,13 +17,17 @@ public class CPTagsView: UIView {
         }
     }
     
-    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?) -> ())?
+    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?, _ index: Int?) -> ())?
     
     lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
-        sv.contentInset.right = self.attribute.spacingBetweenRows
+        if let contentInset = self.attribute.contentInset {
+            sv.contentInset = contentInset
+        } else {
+            sv.contentInset.right = self.attribute.spacingBetweenRows
+        }
         return sv
     }()
     
@@ -164,11 +169,33 @@ public class CPTagsView: UIView {
             if self.attribute.removeItemOnRightImageClick {
                 self.removeItemAndRefresh(item: item)
             }
-            self.rightSideButtonClickObserver?(selectedItem)
+            if let index = self.items.firstIndex(where: { $0.title == item.title &&  $0.id == item.id }) {
+                self.rightSideButtonClickObserver?(selectedItem.item, Int(index))
+            } else {
+                self.rightSideButtonClickObserver?(selectedItem.item, nil)
+            }
+            
         }
         
         tagView.itemClickObserver = { [weak self] (selectedItem) in
-            self?.itemClickObserver?(selectedItem)
+            guard let self = self else { return }
+            if let index = self.items.firstIndex(where: { $0.title == item.title &&  $0.id == item.id }) {
+                self.itemClickObserver?(selectedItem.item, Int(index))
+            } else {
+                self.itemClickObserver?(selectedItem.item, nil)
+            }
+            
+            if self.attribute.selectionStyle == .single {
+                if self.previousSelected == selectedItem {
+                    self.previousSelected = nil
+                } else {
+                    self.previousSelected?.toggle()
+                    self.previousSelected = selectedItem
+                }
+            } else {
+                self.previousSelected = selectedItem
+            }
+            
         }
     }
     
@@ -180,15 +207,15 @@ public class CPTagsView: UIView {
         switch self.attribute.sizeCalculationType {
             case .auto:
                 let extraWidth: CGFloat = 10 + attribute.extraWidth // 10 to adjust auto width.
-                let fonts = item.isSelected ? attribute.fonts.selected : attribute.fonts.unSelected
+                let fonts = item.isSelected ? attribute.fonts.selected : attribute.fonts.normal
                 let sizeFromTexts = estimatedFrame(string: item.title, font: fonts)
                 
                 let numberOfRow: CGFloat = CGFloat(attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow)
                 let spacingBetweenRows: CGFloat = self.attribute.numberOfRow > 1 ? self.attribute.spacingBetweenRows : 0
                 
-                let rightSideImage = item.rightSideImage ?? self.attribute.rightSideImage
-                let sizeOfImage = item.sizeOfRightImage ?? self.attribute.sizeOfRightImage
-                var totalWidth: CGFloat = sizeFromTexts.width + (rightSideImage != nil ? sizeOfImage.width : 0) + extraWidth
+                let rightSideImage = item.rightSideImage?.image ?? self.attribute.rightSideImage?.image
+                let sizeOfImage = item.rightSideImage?.size ?? self.attribute.rightSideImage?.size
+                var totalWidth: CGFloat = sizeFromTexts.width + (rightSideImage != nil ? sizeOfImage?.width ?? 0 : 0) + extraWidth
                 
                 var sizeOfCell: CGSize = .zero
                 
@@ -226,5 +253,13 @@ public class CPTagsView: UIView {
                                                      options: options,
                                                      attributes: [NSAttributedString.Key.font: font],
                                                      context: nil)
+    }
+    
+    public func getSelectedItems() -> [CPTagViewItem] {
+        return self.items.filter({ $0.isSelected })
+    }
+    
+    public func getUnSelectedItems() -> [CPTagViewItem] {
+        return self.items.filter({ !$0.isSelected })
     }
 }

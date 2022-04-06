@@ -7,16 +7,16 @@
 
 import UIKit
 
-class CPTagContainer: UIView {
+public class CPTagContainer: UIView {
     private var labelTrailingConstraintWithView,
-        labelTrailingConstraintWithButton: NSLayoutConstraint!
-  
+                labelTrailingConstraintWithButton: NSLayoutConstraint!
+    
     private var heightOfButton, widthOfButton: NSLayoutConstraint!
     
-    private var item: CPTagViewItem
+    private(set) var item: CPTagViewItem
     private var generalAttributes: CPTagViewAttribute
     
-    var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?) -> ())?
+    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagContainer) -> ())?
     
     let containerView: UIView = {
         let view = UIView()
@@ -39,7 +39,7 @@ class CPTagContainer: UIView {
         return label
     }()
     
-    init(item: CPTagViewItem, generalAttributes: CPTagViewAttribute) {
+    public init(item: CPTagViewItem, generalAttributes: CPTagViewAttribute) {
         self.item = item
         self.generalAttributes = generalAttributes
         
@@ -58,7 +58,7 @@ class CPTagContainer: UIView {
         containerView.setFullOnSuperView()
         
         containerView.addSubviews(views: [labelTitle, buttonClose])
-   
+        
         buttonClose.setCenterY()
         heightOfButton = buttonClose.heightAnchor.constraint(equalToConstant: 0)
         widthOfButton = buttonClose.widthAnchor.constraint(equalToConstant: 0)
@@ -81,34 +81,50 @@ class CPTagContainer: UIView {
     private func configureCell() {
         labelTitle.text = item.title
         let rightSideImage = item.rightSideImage ?? generalAttributes.rightSideImage
-        buttonClose.setImage(rightSideImage, for: .normal)
+        if let rightSizeImageTint = generalAttributes.rightSizeImageTint {
+            buttonClose.tintColor = rightSizeImageTint
+            buttonClose.setImage(rightSideImage?.image.withRenderingMode(.alwaysTemplate), for: .normal)
+        } else {
+            buttonClose.setImage(rightSideImage?.image, for: .normal)
+        }
         
         self.buttonClose.isHidden = rightSideImage == nil
         labelTrailingConstraintWithView.isActive = rightSideImage == nil
         labelTrailingConstraintWithButton.isActive = rightSideImage != nil
         
-        let sizeOfRightImage = item.sizeOfRightImage ?? self.generalAttributes.sizeOfRightImage
-        heightOfButton?.constant = sizeOfRightImage.height
-        widthOfButton?.constant = sizeOfRightImage.width
+        heightOfButton?.constant = rightSideImage?.size.height ?? 0
+        widthOfButton?.constant = rightSideImage?.size.width ?? 0
         
-        labelTitle.font = item.isSelected ? generalAttributes.fonts.selected : generalAttributes.fonts.unSelected
-        labelTitle.textColor = item.isSelected ? generalAttributes.textColor.selected : generalAttributes.textColor.unSelected
-        containerView.backgroundColor = item.isSelected ? generalAttributes.tagBackgroundColor.selected : generalAttributes.tagBackgroundColor.unSelected
-        containerView.layer.cornerRadius = generalAttributes.cornerRadius
+        labelTitle.font = item.isSelected ? generalAttributes.fonts.selected : generalAttributes.fonts.normal
+        labelTitle.textColor = item.isSelected ? generalAttributes.textColor.selected : generalAttributes.textColor.normal
+        containerView.backgroundColor = item.isSelected ? generalAttributes.tagBackgroundColor.selected : generalAttributes.tagBackgroundColor.normal
+        containerView.layer.cornerRadius = item.isSelected ? generalAttributes.cornerRadius.selected : generalAttributes.cornerRadius.normal
         
-        containerView.layer.borderWidth = generalAttributes.border.width
-        containerView.layer.borderColor = generalAttributes.border.color.cgColor
+        let border = item.isSelected ? generalAttributes.border?.selected : generalAttributes.border?.selected
+        containerView.layer.borderWidth = border?.width ?? 0
+        containerView.layer.borderColor = border?.color.cgColor
         containerView.isUserInteractionEnabled = generalAttributes.userInteraction
+        
+        if let shadow = generalAttributes.shadow {
+            containerView.layer.shadowColor = shadow.color.cgColor
+            containerView.layer.shadowOpacity = generalAttributes.shadowOpacity
+            containerView.layer.shadowOffset = shadow.offset
+            containerView.layer.shadowRadius = containerView.layer.cornerRadius
+        }
     }
     
     @objc private func buttonCloseClicked() {
-        rightSideButtonClickObserver?(self.item)
+        rightSideButtonClickObserver?(self)
     }
     
     @objc private func didSelectTag() {
+        toggle()
+        itemClickObserver?(self)
+    }
+    
+    func toggle() {
         item.isSelected = !item.isSelected
         configureCell()
-        itemClickObserver?(self.item)
     }
-
+    
 }
