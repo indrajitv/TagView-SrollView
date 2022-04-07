@@ -1,5 +1,5 @@
 //
-//  CPTagViewItem.swift
+//  TagViewItem.swift
 //  CPTagView
 //
 //  Created by Indrajit Chavda on 28/03/22.
@@ -7,10 +7,12 @@
 
 import UIKit
 
-public class CPTagViewItem {
+public class TagViewItem {
     public let title, id: String
     public var isSelected: Bool
-    public var rightSideImage: (image: UIImage, size: CGSize)? 
+    
+    /// This property will impact current tag. TagViewAttribute has same property, If individual has the value then CPTagViewAttribute's property will not have any impact.
+    public var rightSideImage: (image: UIImage, size: CGSize)?
     
     public init(title: String,
                 id: String,

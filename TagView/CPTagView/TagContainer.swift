@@ -7,16 +7,16 @@
 
 import UIKit
 
-public class CPTagContainer: UIView {
+public class TagContainer: UIView {
     private var labelTrailingConstraintWithView,
                 labelTrailingConstraintWithButton: NSLayoutConstraint!
     
     private var heightOfButton, widthOfButton: NSLayoutConstraint!
     
-    private(set) var item: CPTagViewItem
-    private var generalAttributes: CPTagViewAttribute
+    private(set) var item: TagViewItem
+    private var generalAttributes: TagViewAttribute
     
-    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagContainer) -> ())?
+    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: TagContainer) -> ())?
     
     let containerView: UIView = {
         let view = UIView()
@@ -39,7 +39,7 @@ public class CPTagContainer: UIView {
         return label
     }()
     
-    public init(item: CPTagViewItem, generalAttributes: CPTagViewAttribute) {
+    public init(item: TagViewItem, generalAttributes: TagViewAttribute) {
         self.item = item
         self.generalAttributes = generalAttributes
         
@@ -100,10 +100,9 @@ public class CPTagContainer: UIView {
         containerView.backgroundColor = item.isSelected ? generalAttributes.tagBackgroundColor.selected : generalAttributes.tagBackgroundColor.normal
         containerView.layer.cornerRadius = item.isSelected ? generalAttributes.cornerRadius.selected : generalAttributes.cornerRadius.normal
         
-        let border = item.isSelected ? generalAttributes.border?.selected : generalAttributes.border?.selected
+        let border = item.isSelected ? generalAttributes.border?.selected : generalAttributes.border?.normal
         containerView.layer.borderWidth = border?.width ?? 0
         containerView.layer.borderColor = border?.color.cgColor
-        containerView.isUserInteractionEnabled = generalAttributes.userInteraction
         
         if let shadow = generalAttributes.shadow {
             containerView.layer.shadowColor = shadow.color.cgColor
@@ -111,6 +110,8 @@ public class CPTagContainer: UIView {
             containerView.layer.shadowOffset = shadow.offset
             containerView.layer.shadowRadius = containerView.layer.cornerRadius
         }
+        
+        self.isUserInteractionEnabled = generalAttributes.userInteraction
     }
     
     @objc private func buttonCloseClicked() {

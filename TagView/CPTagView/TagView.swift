@@ -7,17 +7,27 @@
 
 import UIKit
 
-public class CPTagsView: UIView {
-    var previousSelected: CPTagContainer?
-    let attribute: CPTagViewAttribute
+public class TagsView: UIView {
     
-    public var items: [CPTagViewItem] = [] {
+    /// Previously selected tag.
+    var previousSelected: TagContainer?
+    
+    private var attribute: TagViewAttribute
+    
+    /// Editing or setting items will automatically reloads the TagsView.
+    public var items: [TagViewItem] = [] {
         didSet {
             self.addTagsOnScrollView()
         }
     }
     
-    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: CPTagViewItem?, _ index: Int?) -> ())?
+    public var rightSideButtonClickObserver, itemClickObserver: ((_ item: TagViewItem?, _ index: Int?) -> ())?
+    
+    /// If multipleSelectionLimit was set then it will get called on limit reach.
+    public var selectionLimitReached: ((_ setLimit: Int) -> ())?
+    
+    /// After rendering the tags this will give the size of scroll view.
+    public var totalContentSizeOfTagAfterRendering: ((_ size: CGSize) -> ())?
     
     lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -31,7 +41,7 @@ public class CPTagsView: UIView {
         return sv
     }()
     
-    public init(attribute: CPTagViewAttribute) {
+    public init(attribute: TagViewAttribute) {
         self.attribute = attribute
         
         super.init(frame: .zero)
@@ -49,7 +59,21 @@ public class CPTagsView: UIView {
         scrollView.setFullOnSuperView()
     }
     
+    public func updateAttributes(attribute: TagViewAttribute) {
+        self.attribute = attribute
+    }
+    
+    public func getAttributes() -> TagViewAttribute {
+        return self.attribute
+    }
+    
+    public func reloadTags() {
+        let temp = self.items
+        self.items = temp
+    }
+    
     private func addTagsOnScrollView() {
+        self.scrollView.contentSize = .zero
         self.scrollView.subviews.forEach({ $0.removeFromSuperview() })
         self.layoutIfNeeded()
         
@@ -57,6 +81,25 @@ public class CPTagsView: UIView {
             addTagsInVerticalStyle()
         } else {
             self.addTagsInHorizontalStyle()
+        }
+    }
+    
+    private func didSetContentSizeOfScrollView(size: CGSize) {
+        self.totalContentSizeOfTagAfterRendering?(size)
+        if attribute.autoHeightAdjustmentOfContainerFromContentSize {
+            let newHeight = size.height - (self.attribute.tagArrangement == .vertical ? self.attribute.spacingBetweenRows : 0)
+            var heightFound: Bool = false
+            self.scrollView.contentSize.height = newHeight
+            
+            self.constraints.forEach { (constraint) in
+                if constraint.firstAttribute == .height {
+                    constraint.constant = newHeight
+                    heightFound = true
+                }
+            }
+            if !heightFound {
+                self.setHeight(height: newHeight)
+            }
         }
     }
     
@@ -71,7 +114,7 @@ public class CPTagsView: UIView {
             var x: CGFloat = 0
             var maxHeight: CGFloat = 0
             for item in slot {
-                let tagView = CPTagContainer(item: item, generalAttributes: self.attribute)
+                let tagView = TagContainer(item: item, generalAttributes: self.attribute)
                 self.addObserver(tagView: tagView, item: item)
                 
                 let size = self.getSizeOfCell(item: item)
@@ -88,13 +131,18 @@ public class CPTagsView: UIView {
             }
             y += maxHeight + attribute.spacingBetweenRows
         }
+        var contentSize: CGSize = .init(width: maxX,
+                                        height: self.scrollView.frame.height)
+        if contentSize.height == 0 {
+            contentSize.height = y
+        }
+        self.scrollView.contentSize = contentSize
         
-        self.scrollView.contentSize = .init(width: maxX,
-                                            height: self.scrollView.frame.height)
+        self.didSetContentSizeOfScrollView(size: contentSize)
     }
     
-    private func slotsForHorizontalStyle(numberOfRow: Int) -> [[CPTagViewItem]] {
-        var slots: [[CPTagViewItem]] = []
+    private func slotsForHorizontalStyle(numberOfRow: Int) -> [[TagViewItem]] {
+        var slots: [[TagViewItem]] = []
         
         for _ in 0..<numberOfRow {
             slots.append([])
@@ -141,7 +189,7 @@ public class CPTagsView: UIView {
         
         var maxY: CGFloat = 0
         for item in self.items {
-            let tagView = CPTagContainer(item: item, generalAttributes: self.attribute)
+            let tagView = TagContainer(item: item, generalAttributes: self.attribute)
             let size = self.getSizeOfCell(item: item)
             let estimatedSpace: CGFloat = x + size.width + attribute.spacingBetweenRows
             
@@ -161,9 +209,10 @@ public class CPTagsView: UIView {
         
         self.scrollView.contentSize = .init(width: self.scrollView.frame.width - 32, // 32 to remove bounce and scrolling if any
                                             height: maxY + self.attribute.spacingBetweenRows)
+        self.didSetContentSizeOfScrollView(size: self.scrollView.contentSize)
     }
     
-    private func addObserver(tagView: CPTagContainer, item: CPTagViewItem) {
+    private func addObserver(tagView: TagContainer, item: TagViewItem) {
         tagView.rightSideButtonClickObserver = { [weak self] (selectedItem) in
             guard let self = self else { return }
             if self.attribute.removeItemOnRightImageClick {
@@ -179,6 +228,15 @@ public class CPTagsView: UIView {
         
         tagView.itemClickObserver = { [weak self] (selectedItem) in
             guard let self = self else { return }
+            
+            if let setLimit = self.attribute.multipleSelectionLimit {
+                let selectedCount = self.items.filter({ $0.isSelected }).count
+                if selectedCount >= setLimit {
+                    self.selectionLimitReached?(setLimit)
+                    return
+                }
+            }
+            
             if let index = self.items.firstIndex(where: { $0.title == item.title &&  $0.id == item.id }) {
                 self.itemClickObserver?(selectedItem.item, Int(index))
             } else {
@@ -199,11 +257,11 @@ public class CPTagsView: UIView {
         }
     }
     
-    private func removeItemAndRefresh(item: CPTagViewItem) {
+    private func removeItemAndRefresh(item: TagViewItem) {
         self.items.removeAll(where: { $0.id == item.id && $0.title == item.title })
     }
     
-    private func getSizeOfCell(item: CPTagViewItem) -> CGSize {
+    private func getSizeOfCell(item: TagViewItem) -> CGSize {
         switch self.attribute.sizeCalculationType {
             case .auto:
                 let extraWidth: CGFloat = 10 + attribute.extraWidth // 10 to adjust auto width.
@@ -232,14 +290,15 @@ public class CPTagsView: UIView {
                         break
                 }
                 
+                let heightFromFonts: CGFloat = fonts.pointSize * 2.5 // height is 2.5 times of pointSize
                 if attribute.tagArrangement == .vertical {
-                    sizeOfCell = .init(width: totalWidth, height: fonts.pointSize * 2.5) // height is 2.5 times of pointSize
+                    sizeOfCell = .init(width: totalWidth, height: heightFromFonts)
                 } else {
-                    let heightOfCell: CGFloat = (self.frame.height/numberOfRow) - spacingBetweenRows
+                    let dividedHeight: CGFloat = (self.frame.height/numberOfRow) <= 0 ? heightFromFonts : (self.frame.height/numberOfRow)
+                    let heightOfCell: CGFloat = dividedHeight - spacingBetweenRows
                     sizeOfCell = .init(width: totalWidth,
                                        height: heightOfCell + (numberOfRow > 1 ? attribute.spacingBetweenRows / numberOfRow : 0))
                 }
-                
                 return sizeOfCell
             case .manual(size: let size):
                 return size
@@ -255,11 +314,11 @@ public class CPTagsView: UIView {
                                                      context: nil)
     }
     
-    public func getSelectedItems() -> [CPTagViewItem] {
+    public func getSelectedItems() -> [TagViewItem] {
         return self.items.filter({ $0.isSelected })
     }
     
-    public func getUnSelectedItems() -> [CPTagViewItem] {
+    public func getUnSelectedItems() -> [TagViewItem] {
         return self.items.filter({ !$0.isSelected })
     }
 }
