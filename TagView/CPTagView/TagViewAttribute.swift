@@ -79,6 +79,9 @@ public class TagViewAttribute {
     /// Content inset of scroll view.
     public var contentInset: UIEdgeInsets?
     
+    /// Spacing around top, bottom, left, right. This is not contentInset but constraint spacing.
+    public var paddingAroundEdges: UIEdgeInsets?
+    
     /// User can select multiple tags or one tag at a time.
     public var selectionStyle: CPTagsSelectionStyle = .multiple
     

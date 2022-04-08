@@ -55,8 +55,20 @@ public class TagsView: UIView {
     private func setUpViews() {
         self.backgroundColor = attribute.background
         
+        let top: CGFloat = self.attribute.paddingAroundEdges?.top ?? 0
+        let bottom: CGFloat = self.attribute.paddingAroundEdges?.bottom ?? 0
+        let left: CGFloat = self.attribute.paddingAroundEdges?.left ?? 0
+        let right: CGFloat = self.attribute.paddingAroundEdges?.right ?? 0
         self.addSubviews(views: [scrollView])
-        scrollView.setFullOnSuperView()
+        
+        scrollView.setAnchors(top: self.topAnchor,
+                              bottom: self.bottomAnchor,
+                              leading: self.leadingAnchor,
+                              trailing: self.trailingAnchor,
+                              topConstant: top,
+                              bottomConstant: -bottom,
+                              leadingConstant: left,
+                              trailingConstant: -right)
     }
     
     public func updateAttributes(attribute: TagViewAttribute) {
@@ -87,9 +99,14 @@ public class TagsView: UIView {
     private func didSetContentSizeOfScrollView(size: CGSize) {
         self.totalContentSizeOfTagAfterRendering?(size)
         if attribute.autoHeightAdjustmentOfContainerFromContentSize {
-            let newHeight = size.height - (self.attribute.tagArrangement == .vertical ? self.attribute.spacingBetweenRows : 0)
+            var newHeight = size.height - (self.attribute.tagArrangement == .vertical ? self.attribute.spacingBetweenRows : 0)
             var heightFound: Bool = false
             self.scrollView.contentSize.height = newHeight
+            
+            let top: CGFloat = self.attribute.paddingAroundEdges?.top ?? 0
+            let bottom: CGFloat = self.attribute.paddingAroundEdges?.bottom ?? 0
+            
+            newHeight += (top + bottom)
             
             self.constraints.forEach { (constraint) in
                 if constraint.firstAttribute == .height {
@@ -101,44 +118,6 @@ public class TagsView: UIView {
                 self.setHeight(height: newHeight)
             }
         }
-    }
-    
-    private func addTagsInHorizontalStyle() {
-        let numberOfRow: Int = attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow
-        let slots = self.slotsForHorizontalStyle(numberOfRow: numberOfRow)
-        
-        var y: CGFloat = 0
-        var maxX: CGFloat = 0
-        
-        for slot in slots {
-            var x: CGFloat = 0
-            var maxHeight: CGFloat = 0
-            for item in slot {
-                let tagView = TagContainer(item: item, generalAttributes: self.attribute)
-                self.addObserver(tagView: tagView, item: item)
-                
-                let size = self.getSizeOfCell(item: item)
-                self.scrollView.addSubview(tagView)
-                tagView.frame = .init(origin: .init(x: x, y: y), size: size)
-                x += size.width + self.attribute.spacingBetweenRows
-                
-                if size.height > maxHeight {
-                    maxHeight = size.height
-                }
-            }
-            if x > maxX {
-                maxX = x
-            }
-            y += maxHeight + attribute.spacingBetweenRows
-        }
-        var contentSize: CGSize = .init(width: maxX,
-                                        height: self.scrollView.frame.height)
-        if contentSize.height == 0 {
-            contentSize.height = y
-        }
-        self.scrollView.contentSize = contentSize
-        
-        self.didSetContentSizeOfScrollView(size: contentSize)
     }
     
     private func slotsForHorizontalStyle(numberOfRow: Int) -> [[TagViewItem]] {
@@ -181,6 +160,44 @@ public class TagsView: UIView {
             }
         }
         return slots
+    }
+    
+    private func addTagsInHorizontalStyle() {
+        let numberOfRow: Int = attribute.numberOfRow <= 0 ? 1 : attribute.numberOfRow
+        let slots = self.slotsForHorizontalStyle(numberOfRow: numberOfRow)
+        
+        var y: CGFloat = 0
+        var maxX: CGFloat = 0
+        
+        for slot in slots {
+            var x: CGFloat = 0
+            var maxHeight: CGFloat = 0
+            for item in slot {
+                let tagView = TagContainer(item: item, generalAttributes: self.attribute)
+                self.addObserver(tagView: tagView, item: item)
+                
+                let size = self.getSizeOfCell(item: item)
+                self.scrollView.addSubview(tagView)
+                tagView.frame = .init(origin: .init(x: x, y: y), size: size)
+                x += size.width + self.attribute.spacingBetweenRows
+                
+                if size.height > maxHeight {
+                    maxHeight = size.height
+                }
+            }
+            if x > maxX {
+                maxX = x
+            }
+            y += maxHeight + attribute.spacingBetweenRows
+        }
+        var contentSize: CGSize = .init(width: maxX,
+                                        height: attribute.autoHeightAdjustmentOfContainerFromContentSize ? y - attribute.spacingBetweenRows : self.scrollView.frame.height)
+        if contentSize.height == 0 {
+            contentSize.height = y - attribute.spacingBetweenRows
+        }
+        self.scrollView.contentSize = contentSize
+        
+        self.didSetContentSizeOfScrollView(size: contentSize)
     }
     
     private func addTagsInVerticalStyle() {
@@ -279,8 +296,8 @@ public class TagsView: UIView {
                 
                 switch self.attribute.widthExpansionPolicy {
                     case .lessThanOrEqualToWidth:
-                        if totalWidth > self.frame.width - (self.attribute.spacingBetweenRows * 2) {
-                            totalWidth = self.frame.width - (self.attribute.spacingBetweenRows * 2) - 16
+                        if totalWidth > self.scrollView.frame.width - (self.attribute.spacingBetweenRows * 2) {
+                            totalWidth = self.scrollView.frame.width - (self.attribute.spacingBetweenRows * 2) - 16
                         }
                     case .lessThanOrEqualTo(let limit):
                         totalWidth = totalWidth > limit ? limit : totalWidth
@@ -291,10 +308,10 @@ public class TagsView: UIView {
                 }
                 
                 let heightFromFonts: CGFloat = fonts.pointSize * 2.5 // height is 2.5 times of pointSize
-                if attribute.tagArrangement == .vertical {
+                if attribute.tagArrangement == .vertical || self.attribute.autoHeightAdjustmentOfContainerFromContentSize {
                     sizeOfCell = .init(width: totalWidth, height: heightFromFonts)
                 } else {
-                    let dividedHeight: CGFloat = (self.frame.height/numberOfRow) <= 0 ? heightFromFonts : (self.frame.height/numberOfRow)
+                    let dividedHeight: CGFloat = (self.scrollView.frame.height/numberOfRow) <= 0 ? heightFromFonts : (self.scrollView.frame.height/numberOfRow)
                     let heightOfCell: CGFloat = dividedHeight - spacingBetweenRows
                     sizeOfCell = .init(width: totalWidth,
                                        height: heightOfCell + (numberOfRow > 1 ? attribute.spacingBetweenRows / numberOfRow : 0))

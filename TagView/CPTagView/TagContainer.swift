@@ -39,6 +39,12 @@ public class TagContainer: UIView {
         return label
     }()
     
+    let dotView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .red
+        return view
+    }()
+    
     public init(item: TagViewItem, generalAttributes: TagViewAttribute) {
         self.item = item
         self.generalAttributes = generalAttributes
@@ -73,6 +79,13 @@ public class TagContainer: UIView {
         
         labelTrailingConstraintWithView = labelTitle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         labelTrailingConstraintWithButton = labelTitle.trailingAnchor.constraint(equalTo: self.buttonClose.leadingAnchor)
+        
+        containerView.addSubview(dotView)
+        let sizeOfDot: CGFloat = 12
+        dotView.setTop(with: containerView.topAnchor, constant: -sizeOfDot/2.5)
+        dotView.setHeightAndWidth(height: sizeOfDot, width: sizeOfDot)
+        dotView.setTrailing(with: containerView.trailingAnchor, constant: -7)
+        dotView.layer.cornerRadius = sizeOfDot/2
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didSelectTag))
         self.addGestureRecognizer(tap)

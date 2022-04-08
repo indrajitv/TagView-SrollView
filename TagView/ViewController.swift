@@ -16,13 +16,14 @@ class ViewController: UIViewController {
                                   tagBackgroundColor: (normal: .white, selected: .lightGray),
                                   fonts: (normal: UIFont.systemFont(ofSize: 12),
                                           selected: UIFont.systemFont(ofSize: 12)))
+        att.removeItemOnRightImageClick = true
         att.shadow = (.init(width: -1, height: 1), .black)
         att.rightSizeImageTint = .blue
         att.numberOfRow = 3
-        att.background = .red
+        att.background = .darkGray
         att.rightSideImage = (UIImage(imageLiteralResourceName: "close"), .init(width: 20, height: 20))
         att.autoHeightAdjustmentOfContainerFromContentSize = true
-        att.removeItemOnRightImageClick = true
+        att.paddingAroundEdges = .init(top: 10, left: 10, bottom: 0, right: 0)
         return TagsView(attribute: att)
     }()
     
@@ -35,10 +36,11 @@ class ViewController: UIViewController {
                     selected: UIFont.systemFont(ofSize: 12)))
         att.shadow = (.init(width: -1, height: 1), .black)
         att.rightSizeImageTint = .blue
-        att.background = .red
+        att.background = .gray
         att.autoHeightAdjustmentOfContainerFromContentSize = true
         att.removeItemOnRightImageClick = true
         att.rightSideImage = (UIImage(imageLiteralResourceName: "close"), .init(width: 20, height: 20))
+        att.paddingAroundEdges = .init(top: 10, left: 10, bottom: 10, right: 10)
         return TagsView(attribute: att)
     }()
     
@@ -56,6 +58,7 @@ class ViewController: UIViewController {
         att.removeItemOnRightImageClick = true
         att.background = .red
         att.rightSideImage = (UIImage(imageLiteralResourceName: "close"), .init(width: 20, height: 20))
+        att.paddingAroundEdges = .init(top: 10, left: 10, bottom: 10, right: 10)
         return TagsView(attribute: att)
     }()
     
