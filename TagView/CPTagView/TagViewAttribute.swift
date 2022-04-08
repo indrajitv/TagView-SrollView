@@ -76,9 +76,6 @@ public class TagViewAttribute {
     
     public var shadowOpacity: Float = 0.3
     
-    /// Content inset of scroll view.
-    public var contentInset: UIEdgeInsets?
-    
     /// Spacing around top, bottom, left, right. This is not contentInset but constraint spacing.
     public var paddingAroundEdges: UIEdgeInsets?
     

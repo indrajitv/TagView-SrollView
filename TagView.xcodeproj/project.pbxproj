@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A574F3E2280018EE00CCC763 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A574F3E1280018EE00CCC763 /* UIView+Anchor.swift */; };
 		A590896C27F18B70006D7AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590896B27F18B70006D7AC8 /* AppDelegate.swift */; };
 		A590896E27F18B70006D7AC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590896D27F18B70006D7AC8 /* SceneDelegate.swift */; };
 		A590897027F18B70006D7AC8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590896F27F18B70006D7AC8 /* ViewController.swift */; };
@@ -14,13 +15,13 @@
 		A590897527F18B72006D7AC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A590897427F18B72006D7AC8 /* Assets.xcassets */; };
 		A590897827F18B72006D7AC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A590897627F18B72006D7AC8 /* LaunchScreen.storyboard */; };
 		A590898127F18BC2006D7AC8 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898027F18BC2006D7AC8 /* TagView.swift */; };
-		A590898327F18CC2006D7AC8 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */; };
 		A590898527F18D21006D7AC8 /* TagViewAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898427F18D21006D7AC8 /* TagViewAttribute.swift */; };
 		A590898927F18EC3006D7AC8 /* TagViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898827F18EC3006D7AC8 /* TagViewItem.swift */; };
 		A590898B27F18F03006D7AC8 /* TagContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A590898A27F18F03006D7AC8 /* TagContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A574F3E1280018EE00CCC763 /* UIView+Anchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Anchor.swift"; path = "TagView/UIView+Anchor.swift"; sourceTree = SOURCE_ROOT; };
 		A590896827F18B70006D7AC8 /* TagView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TagView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A590896B27F18B70006D7AC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A590896D27F18B70006D7AC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -30,7 +31,6 @@
 		A590897727F18B72006D7AC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A590897927F18B72006D7AC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A590898027F18BC2006D7AC8 /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
-		A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchor.swift"; sourceTree = "<group>"; };
 		A590898427F18D21006D7AC8 /* TagViewAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewAttribute.swift; sourceTree = "<group>"; };
 		A590898827F18EC3006D7AC8 /* TagViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewItem.swift; sourceTree = "<group>"; };
 		A590898A27F18F03006D7AC8 /* TagContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagContainer.swift; sourceTree = "<group>"; };
@@ -70,7 +70,6 @@
 				A590896D27F18B70006D7AC8 /* SceneDelegate.swift */,
 				A590896F27F18B70006D7AC8 /* ViewController.swift */,
 				A590897127F18B70006D7AC8 /* Main.storyboard */,
-				A590898227F18CC2006D7AC8 /* UIView+Anchor.swift */,
 				A590897427F18B72006D7AC8 /* Assets.xcassets */,
 				A590897627F18B72006D7AC8 /* LaunchScreen.storyboard */,
 				A590897927F18B72006D7AC8 /* Info.plist */,
@@ -82,6 +81,7 @@
 		A590897F27F18BA5006D7AC8 /* CPTagView */ = {
 			isa = PBXGroup;
 			children = (
+				A574F3E1280018EE00CCC763 /* UIView+Anchor.swift */,
 				A590898427F18D21006D7AC8 /* TagViewAttribute.swift */,
 				A590898827F18EC3006D7AC8 /* TagViewItem.swift */,
 				A590898027F18BC2006D7AC8 /* TagView.swift */,
@@ -166,9 +166,9 @@
 				A590898927F18EC3006D7AC8 /* TagViewItem.swift in Sources */,
 				A590896C27F18B70006D7AC8 /* AppDelegate.swift in Sources */,
 				A590898527F18D21006D7AC8 /* TagViewAttribute.swift in Sources */,
+				A574F3E2280018EE00CCC763 /* UIView+Anchor.swift in Sources */,
 				A590896E27F18B70006D7AC8 /* SceneDelegate.swift in Sources */,
 				A590898127F18BC2006D7AC8 /* TagView.swift in Sources */,
-				A590898327F18CC2006D7AC8 /* UIView+Anchor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

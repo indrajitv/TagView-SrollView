@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         att.background = .darkGray
         att.rightSideImage = (UIImage(imageLiteralResourceName: "close"), .init(width: 20, height: 20))
         att.autoHeightAdjustmentOfContainerFromContentSize = true
-        att.paddingAroundEdges = .init(top: 10, left: 10, bottom: 0, right: 0)
+        att.paddingAroundEdges = .init(top: 10, left: 10, bottom: 10, right: 10)
         return TagsView(attribute: att)
     }()
     
@@ -72,11 +72,13 @@ class ViewController: UIViewController {
         tag1.setAnchors(top: self.view.topAnchor,
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
-                        topConstant: 70)
+                        topConstant: 70,leadingConstant: 10, trailingConstant: -10)
         var array = [TagViewItem]()
+        
         for i in 1...20 {
             if i == 1 {
                 let item: TagViewItem = .init(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a", id: UUID().uuidString)
+                item.roundBadge = (12, .blue)
                 item.rightSideImage = (image: UIImage(imageLiteralResourceName: "close"), size: .init(width: 20, height: 20))
                 array.append(item)
             } else {
@@ -100,8 +102,8 @@ class ViewController: UIViewController {
         tag2.setAnchors(top: self.view.topAnchor,
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
-                        topConstant: 200)
-        tag2.items = tag1.items
+                        topConstant: 200, leadingConstant: 10, trailingConstant: -10)
+        tag2.items = array
         
         self.view.addSubview(tag3)
         
@@ -109,8 +111,8 @@ class ViewController: UIViewController {
         tag3.setAnchors(top: self.view.topAnchor,
                         leading: self.view.leadingAnchor,
                         trailing: self.view.trailingAnchor,
-                        topConstant: 280)
-        tag3.items = tag1.items
+                        topConstant: 280,leadingConstant: 10, trailingConstant: -10)
+        tag3.items = array
     }
     
     func randomWord() -> String {
